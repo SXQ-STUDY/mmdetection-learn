@@ -138,7 +138,8 @@ class MaxIoUAssigner(BaseAssigner):
                 gt_bboxes_ignore = gt_bboxes_ignore.cpu()
 
         overlaps = self.iou_calculator(gt_bboxes, priors)
-
+        # gt_bboxex_ignore为忽略的gt_bbox，下面的代码意义就是把和gt_ignore的iof大于一定的阈值的anchor设为负样本
+        # 标注时可能因为会遇到大量拥挤、模糊难以识别的目标，因而有些gt会被视为ignore，忽略掉。
         if (self.ignore_iof_thr > 0 and gt_bboxes_ignore is not None
                 and gt_bboxes_ignore.numel() > 0 and priors.numel() > 0):
             if self.ignore_wrt_candidates:
@@ -235,9 +236,10 @@ class MaxIoUAssigner(BaseAssigner):
         pos_inds = torch.nonzero(
             assigned_gt_inds > 0, as_tuple=False).squeeze()
         if pos_inds.numel() > 0:
-            assigned_labels[pos_inds] = gt_labels[assigned_gt_inds[pos_inds] -
-                                                  1]
-
+            assigned_labels[pos_inds] = gt_labels[assigned_gt_inds[pos_inds] - 1]
+        # assigned_gt_inds为每个anchor所分配到的gt的下标(0...num_gts),pos的anchor所对应的值为(1--num_gts),neg的anchor值为0,其他的为-1
+        # max_overlaps为每个anchor和所有gt所对应的iou中的最大值
+        # assigned_labels为每个anchor所对应的类别
         return AssignResult(
             num_gts=num_gts,
             gt_inds=assigned_gt_inds,

@@ -200,7 +200,7 @@ class RPNHead(AnchorHead):
                 # remind that we set FG labels to [0] since mmdet v2.0
                 # BG cat_id: 1
                 scores = cls_score.softmax(-1)[:, :-1]
-
+    
             scores = torch.squeeze(scores)
             if 0 < nms_pre < scores.shape[0]:
                 # sort is faster than topk

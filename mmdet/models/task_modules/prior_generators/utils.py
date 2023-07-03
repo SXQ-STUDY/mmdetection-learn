@@ -24,6 +24,7 @@ def anchor_inside_flags(flat_anchors: Tensor,
         torch.Tensor: Flags indicating whether the anchors are inside a \
             valid range.
     """
+    # 这里的img_shape为非pad的,所以如果allowed_border如果为>=0,则相当于把pad区域和超出allowed_border的anchor过滤掉
     img_h, img_w = img_shape[:2]
     if allowed_border >= 0:
         if isinstance(flat_anchors, BaseBoxes):
@@ -32,6 +33,7 @@ def anchor_inside_flags(flat_anchors: Tensor,
                                        all_inside=True,
                                        allowed_border=allowed_border)
         else:
+            # img_h,img_w相当于图像右下角坐标,左上角坐标为(0,0),allowed_border为允许anchor超出图片边界的边界大小
             inside_flags = valid_flags & \
                 (flat_anchors[:, 0] >= -allowed_border) & \
                 (flat_anchors[:, 1] >= -allowed_border) & \

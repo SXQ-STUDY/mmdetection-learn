@@ -441,7 +441,7 @@ class AnchorGenerator:
                                                   self.num_base_anchors[i],
                                                   device=device)
             multi_level_flags.append(flags)
-        return multi_level_flags
+        return multi_level_flags # 所有特征层上每一个anchor的flag，true代表有效，false代表无效
 
     def single_level_valid_flags(self,
                                  featmap_size: Tuple[int, int],
@@ -473,7 +473,7 @@ class AnchorGenerator:
         valid = valid_xx & valid_yy
         valid = valid[:, None].expand(valid.size(0),
                                       num_base_anchors).contiguous().view(-1)
-        return valid
+        return valid # 返回当前特征层上每一个anchor的flag，shape：N(当前特征层的anchor个数)
 
     def __repr__(self) -> str:
         """str: a string that describes the module"""

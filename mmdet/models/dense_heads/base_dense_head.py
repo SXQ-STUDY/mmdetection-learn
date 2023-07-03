@@ -157,7 +157,7 @@ class BaseDenseHead(BaseModule, metaclass=ABCMeta):
         outputs = unpack_gt_instances(batch_data_samples)
         (batch_gt_instances, batch_gt_instances_ignore,
          batch_img_metas) = outputs
-
+        # 获取所有anchor对应的预测概率和预测的边界框回归参数
         outs = self(x)
 
         loss_inputs = outs + (batch_gt_instances, batch_img_metas,

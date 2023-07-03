@@ -237,6 +237,7 @@ class AnchorHead(BaseDenseHead):
                 - neg_inds (Tensor): negative samples indexes.
                 - sampling_result (:obj:`SamplingResult`): Sampling results.
         """
+        # 去除pad 区域的anchor和超出allow_border的anchor
         inside_flags = anchor_inside_flags(flat_anchors, valid_flags,
                                            img_meta['img_shape'][:2],
                                            self.train_cfg['allowed_border'])
@@ -274,6 +275,7 @@ class AnchorHead(BaseDenseHead):
         # tensor targets. If regressing decoded boxes, the code will convert
         # box type `pos_bbox_targets` to tensor.
         if len(pos_inds) > 0:
+            # self.reg_decoded_bbox控制着回归损失函数是使用iou loss还是L1那种loss，iou loss意味着需要对预测结果进行进行decode
             if not self.reg_decoded_bbox:
                 pos_bbox_targets = self.bbox_coder.encode(
                     sampling_result.pos_priors, sampling_result.pos_gt_bboxes)
@@ -450,9 +452,7 @@ class AnchorHead(BaseDenseHead):
         target_dim = bbox_targets.size(-1)
         bbox_targets = bbox_targets.reshape(-1, target_dim)
         bbox_weights = bbox_weights.reshape(-1, target_dim)
-        bbox_pred = bbox_pred.permute(0, 2, 3,
-                                      1).reshape(-1,
-                                                 self.bbox_coder.encode_size)
+        bbox_pred = bbox_pred.permute(0, 2, 3, 1).reshape(-1, self.bbox_coder.encode_size)
         if self.reg_decoded_bbox:
             # When the regression loss (e.g. `IouLoss`, `GIouLoss`)
             # is applied directly on the decoded bounding boxes, it
