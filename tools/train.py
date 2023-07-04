@@ -62,7 +62,7 @@ def parse_args():
 def main():
     args = parse_args()
     
-    args.config = r'myconfigs\study-configs\faster-rcnn_r50_fpn_1x_voc0712.py'
+    args.config = r'myconfigs\study-configs\ssd512_voc0712.py'
 
     # Reduce the number of repeated compilations and improve
     # training speed.

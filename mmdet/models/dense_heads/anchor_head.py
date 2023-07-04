@@ -237,7 +237,7 @@ class AnchorHead(BaseDenseHead):
                 - neg_inds (Tensor): negative samples indexes.
                 - sampling_result (:obj:`SamplingResult`): Sampling results.
         """
-        # 去除pad 区域的anchor和超出allow_border的anchor
+        # 去除pad区域的anchor和超出allow_border的anchor
         inside_flags = anchor_inside_flags(flat_anchors, valid_flags,
                                            img_meta['img_shape'][:2],
                                            self.train_cfg['allowed_border'])
