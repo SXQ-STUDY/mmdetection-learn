@@ -512,7 +512,7 @@ class YOLOV3Head(BaseDenseHead):
             gt_cy = ((gt_bboxes[:, 1] + gt_bboxes[:, 3]) * 0.5).to(device)
             gt_grid_x = torch.floor(gt_cx / anchor_stride[0]).long()
             gt_grid_y = torch.floor(gt_cy / anchor_stride[1]).long()
-            # row major indexing
+            # row major indexing, 按行展开得到gt的坐标值
             gt_bboxes_grid_idx = gt_grid_y * feat_w + gt_grid_x
 
             responsible_grid = torch.zeros(

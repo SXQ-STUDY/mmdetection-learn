@@ -62,7 +62,7 @@ def parse_args():
 def main():
     args = parse_args()
     
-    args.config = r'myconfigs\study-configs\retinanet.py'
+    args.config = r'myconfigs\study-configs\yolov3_d53_8xb8-ms-416-273e.py'
 
     # Reduce the number of repeated compilations and improve
     # training speed.
