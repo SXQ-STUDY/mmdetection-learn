@@ -56,6 +56,7 @@ class YOLOBBoxCoder(BaseBBoxCoder):
         h = bboxes[..., 3] - bboxes[..., 1]
         w_target = torch.log((w_gt / w).clamp(min=self.eps))
         h_target = torch.log((h_gt / h).clamp(min=self.eps))
+        # +0.5是为了获得相对于gridcell的左上角的偏移量，其实就是x_center_gt/stride的小数部分
         x_center_target = ((x_center_gt - x_center) / stride + 0.5).clamp(
             self.eps, 1 - self.eps)
         y_center_target = ((y_center_gt - y_center) / stride + 0.5).clamp(
