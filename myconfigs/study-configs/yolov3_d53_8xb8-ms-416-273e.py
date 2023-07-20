@@ -95,6 +95,8 @@ model = dict(
 
 backend_args = None
 
+data_root = r'D:\my-projects\datasets\VOCdevkit\VOCdevkit'
+
 train_dataloader = dict(
     batch_size=8,
     num_workers=4,
@@ -103,7 +105,7 @@ train_dataloader = dict(
     batch_sampler=dict(type='AspectRatioBatchSampler'),
     dataset=dict(
         type='VOCDataset',
-        data_root='data/VOCdevkit/',
+        data_root=data_root,
         ann_file='VOC2007/ImageSets/Main/trainval.txt',
         data_prefix=dict(sub_data_root='VOC2007/'),
         filter_cfg=dict(filter_empty_gt=True, min_size=32),
@@ -136,7 +138,7 @@ val_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type='VOCDataset',
-        data_root='data/VOCdevkit/',
+        data_root=data_root,
         ann_file='VOC2007test/ImageSets/Main/test.txt',
         data_prefix=dict(sub_data_root='VOC2007test/'),
         test_mode=True,
@@ -158,7 +160,7 @@ test_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type='VOCDataset',
-        data_root='data/VOCdevkit/',
+        data_root=data_root,
         ann_file='VOC2007test/ImageSets/Main/test.txt',
         data_prefix=dict(sub_data_root='VOC2007test/'),
         test_mode=True,
